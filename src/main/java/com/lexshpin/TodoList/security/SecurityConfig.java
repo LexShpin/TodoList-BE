@@ -30,8 +30,10 @@ public class SecurityConfig {
                 .csrf().disable()
                 .httpBasic()
                 .and()
-//                .authorizeHttpRequests(requests -> requests
-//                        .requestMatchers())
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/index.html", "/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/todos", "/project").authenticated()
+                        .anyRequest().permitAll())
                 .userDetailsService(personService)
                 .logout()
                 .logoutUrl("/logout")
