@@ -8,4 +8,5 @@ import java.util.List;
 public interface TodoRepo extends JpaRepository<Todo, Integer> {
 
     List<Todo> getAllByUsername(String username);
+    List<Todo> getAllByProjectId(int id);
 }

@@ -1,5 +1,6 @@
 package com.lexshpin.TodoList.service;
 
+import com.lexshpin.TodoList.model.Project;
 import com.lexshpin.TodoList.model.Todo;
 import com.lexshpin.TodoList.repo.TodoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,10 @@ public class TodoService{
 
     public List<Todo> getAllByUsername(String username) {
         return this.todoRepo.getAllByUsername(username);
+    }
+
+    public List<Todo> getAllByProjectId(int id) {
+        return this.todoRepo.getAllByProjectId(id);
     }
 
     public void update(int id, Todo todo) {
