@@ -2,6 +2,7 @@ package com.lexshpin.TodoList.controller;
 
 import com.lexshpin.TodoList.dto.PersonDTO;
 import com.lexshpin.TodoList.model.Person;
+import com.lexshpin.TodoList.security.PersonDetails;
 import com.lexshpin.TodoList.service.PersonService;
 import com.lexshpin.TodoList.service.RegistrationService;
 import org.modelmapper.ModelMapper;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -42,6 +46,29 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<PersonDTO> login(@RequestBody PersonDTO personDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(personDTO.getUsername(), personDTO.getPassword());
+
+        UserDetails currentPerson = personService.loadUserByUsername(personDTO.getUsername());
+
+        try {
+            authenticationManager.authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        PersonDTO personDTOToReturn = convertToPersonDTO(currentPerson);
+
+        return new ResponseEntity<>(personDTOToReturn, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        SecurityContextHolder.clearContext();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private PersonDTO convertToPersonDTO(UserDetails currentPerson) {
+
+        return modelMapper.map(currentPerson, PersonDTO.class);
     }
 
     private Person convertToPerson(PersonDTO personDTO) {
