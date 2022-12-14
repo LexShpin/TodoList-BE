@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Configuration
 @EnableWebSecurity
@@ -31,13 +32,13 @@ public class SecurityConfig {
                 .httpBasic()
                 .and()
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/index.html", "/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/index.html", "/", "/auth/login", "/auth/register").permitAll()
                         .requestMatchers("/todos", "/project").authenticated()
                         .anyRequest().permitAll())
                 .userDetailsService(personService)
                 .logout()
                 .logoutUrl("/logout")
-                .logoutUrl("/auth/login");
+                .logoutSuccessUrl("/auth/login");
 
         return http.build();
     }

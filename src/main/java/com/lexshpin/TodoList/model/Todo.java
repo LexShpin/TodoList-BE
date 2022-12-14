@@ -23,6 +23,9 @@ public class Todo {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "project_id")
+    private Integer projectId;
+
     public Todo() {}
 
     public Todo(String description, Date dueDate, String priority, String username) {
@@ -31,6 +34,7 @@ public class Todo {
         this.priority = priority;
         this.isCompleted = false;
         this.username = username;
+        this.projectId = null;
     }
 
     public int getId() {
@@ -79,5 +83,13 @@ public class Todo {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
     }
 }

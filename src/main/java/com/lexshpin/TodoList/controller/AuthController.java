@@ -40,35 +40,27 @@ public class AuthController {
 
         registrationService.register(person);
 
-        return new ResponseEntity(person, HttpStatus.CREATED);
+        return new ResponseEntity<>(personDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<PersonDTO> login(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<PersonDTO> loginPerson(@RequestBody PersonDTO personDTO) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(personDTO.getUsername(), personDTO.getPassword());
-
-        UserDetails currentPerson = personService.loadUserByUsername(personDTO.getUsername());
 
         try {
             authenticationManager.authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        PersonDTO personDTOToReturn = convertToPersonDTO(currentPerson);
-
-        return new ResponseEntity<>(personDTOToReturn, HttpStatus.OK);
+        return new ResponseEntity<>(personDTO, HttpStatus.OK);
     }
 
     @GetMapping("/logout")
     public ResponseEntity<?> logout() {
         SecurityContextHolder.clearContext();
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private PersonDTO convertToPersonDTO(UserDetails currentPerson) {
-
-        return modelMapper.map(currentPerson, PersonDTO.class);
     }
 
     private Person convertToPerson(PersonDTO personDTO) {

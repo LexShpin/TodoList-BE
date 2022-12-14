@@ -1,7 +1,5 @@
 package com.lexshpin.TodoList.dto;
 
-import jakarta.persistence.Column;
-
 public class PersonDTO {
 
     private String username;
