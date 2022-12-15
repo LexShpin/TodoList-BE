@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
+@CrossOrigin
 public class TodoController {
 
     private final TodoService todoService;
@@ -24,11 +25,29 @@ public class TodoController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<Todo>> getAllPersonTodos(@PathVariable("username") String username) {
+    public ResponseEntity<List<Todo>> getAllPersonsTodos(@PathVariable("username") String username) {
 
-        List<Todo> personTodos = todoService.getAllByUsername(username);
+        List<Todo> personsTodos = todoService.getAllByUsername(username);
 
-        return new ResponseEntity<>(personTodos, HttpStatus.OK);
+        return new ResponseEntity<>(personsTodos, HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}/{projectId}")
+    public ResponseEntity<List<Todo>> getAllPersonsTodosByProjectId(@PathVariable("username") String username, @PathVariable("projectId") int projectId) {
+
+        List<Todo> personsTodosByProjectId = todoService.getAllByProjectId(projectId);
+
+        return new ResponseEntity<>(personsTodosByProjectId, HttpStatus.OK);
+    }
+
+    @GetMapping("/{username}/today")
+    public ResponseEntity<List<Todo>> getAllPersonsTodosForToday(@PathVariable("username") String username) {
+
+    }
+
+    @GetMapping("/{username}/upcoming")
+    public ResponseEntity<List<Todo>> getAllUpcomingPersonsTodos(@PathVariable("username") String username) {
+
     }
 
     @PostMapping("/add")

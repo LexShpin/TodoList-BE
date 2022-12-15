@@ -26,6 +26,8 @@ public class Todo {
     @Column(name = "project_id")
     private Integer projectId;
 
+    private String projectName;
+
     public Todo() {}
 
     public Todo(String description, Date dueDate, String priority, String username) {
