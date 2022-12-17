@@ -1,6 +1,8 @@
 package com.lexshpin.TodoList.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,6 +17,7 @@ public class Todo {
     @Column(name = "description")
     private String description;
     @Column(name = "due_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
     @Column(name = "priority")
     private String priority;
@@ -26,6 +29,7 @@ public class Todo {
     @Column(name = "project_id")
     private Integer projectId;
 
+    @Column(name = "project_name")
     private String projectName;
 
     public Todo() {}
@@ -93,5 +97,13 @@ public class Todo {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 }

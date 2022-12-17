@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/projects")
+@CrossOrigin
 public class ProjectController {
 
     private final ProjectRepo projectRepo;
@@ -37,18 +38,6 @@ public class ProjectController {
             throw new Exception("Could not load user's list of projects");
         }
 
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Todo>> getProjectTodos(@PathVariable("id") int id) throws Exception {
-
-        //TODO: Load all project todos here
-        try {
-            List<Todo> projectTodos = todoService.getAllByProjectId(id);
-            return new ResponseEntity<>(projectTodos, HttpStatus.OK);
-        } catch (Exception e) {
-            throw new Exception("Could not load this project's todos");
-        }
     }
 
     @PostMapping("/add")

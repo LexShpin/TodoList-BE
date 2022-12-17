@@ -1,5 +1,6 @@
 package com.lexshpin.TodoList.controller;
 
+import com.lexshpin.TodoList.model.Priority;
 import com.lexshpin.TodoList.model.Todo;
 import com.lexshpin.TodoList.repo.TodoRepo;
 import com.lexshpin.TodoList.service.TodoService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -43,11 +45,21 @@ public class TodoController {
     @GetMapping("/{username}/today")
     public ResponseEntity<List<Todo>> getAllPersonsTodosForToday(@PathVariable("username") String username) {
 
+        List<Todo> personsTodosForToday = todoService.getAllForToday(username);
+
+        return new ResponseEntity<>(personsTodosForToday, HttpStatus.OK);
     }
 
     @GetMapping("/{username}/upcoming")
     public ResponseEntity<List<Todo>> getAllUpcomingPersonsTodos(@PathVariable("username") String username) {
+        return null;
+    }
 
+    @GetMapping("/priorities")
+    public ResponseEntity<List<Priority[]>> getPriorities() {
+        List<Priority[]> priorities = Collections.singletonList(Priority.values());
+
+        return new ResponseEntity<>(priorities, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -58,7 +70,7 @@ public class TodoController {
         return new ResponseEntity<>(todo, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}/edit")
+    @PatchMapping("/{id}/edit")
     public ResponseEntity<Todo> editTodo(@PathVariable("id") int id, @RequestBody Todo todo) throws Exception {
 
         try {
